@@ -20,7 +20,7 @@ def search_needed_news(string): #small dictionary that I used to get needed stri
 		return False
 
 
-def prettify_string(string):
+def prettify_string(string):#make string better)
 	result = list()
 	for char in string:
 			if char.isalnum():
@@ -30,7 +30,7 @@ def prettify_string(string):
 	return ''.join(result)
 
 
-def get_needed_lvl(tag, lvl):
+def get_needed_lvl(tag, lvl):#going up in tag tree to make parsing sentence more readable
 	for i in range(lvl):
 		tag = tag.parent
 		i+=1
@@ -39,19 +39,14 @@ def get_needed_lvl(tag, lvl):
 
 def parser(html, lvl):
 	soup = BeautifulSoup(html, 'html.parser')
-	all_news = soup.find_all(text = re.compile("обрани"), limit = 3) # last news
-
-	#if len(all_news) != 0:
-	#	print(len(all_news))
-	#check
-
+	all_news = soup.find_all(text = re.compile("обрани"), limit = 3) # newest 3 words
 	answer = ''
+
 	for news in all_news: 
-		#string = (str)(news.parent.parent.get_text()).lower()
 		string = get_needed_lvl(news,lvl)
 		if search_needed_news(string):
-			print(prettify_string(string))
-			answer = string # 2nd lvl
+			#print(prettify_string(string))
+			answer = prettify_string(string)
 		else:
 			continue
 	return answer
