@@ -14,6 +14,5 @@ def main():
 		ParsersPackage.parsers.parser(html, iterator[1])
 
 
-
 if __name__ == '__main__':
 	main()

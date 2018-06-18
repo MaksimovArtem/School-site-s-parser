@@ -29,6 +29,7 @@ def prettify_string(string):
 				result.append(char)
 	return ''.join(result)
 
+
 def get_needed_lvl(tag, lvl):
 	for i in range(lvl):
 		tag = tag.parent
