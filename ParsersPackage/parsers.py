@@ -45,8 +45,8 @@ def parser(html, lvl):
 	for news in all_news: 
 		string = get_needed_lvl(news,lvl)
 		if search_needed_news(string):
-			#print(prettify_string(string))
 			answer = prettify_string(string)
+			print(answer)	
 		else:
 			continue
 	return answer

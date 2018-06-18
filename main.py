@@ -1,14 +1,14 @@
 import ParsersPackage.parsers
 import csv
 
-#schools_map = {
-#	'Школа 5' : ['http://www.nnovschool5.edusite.ru/p505aa1.html', 2],
-#	'Школа 12': ['http://schoolnn12.narod.ru/', 2],
-#	'Школа 15': ['http://www.school-15.ru/parents.htm', 4]
-#}
+schools_map = {
+	'Школа 5' : ['http://www.nnovschool5.edusite.ru/p505aa1.html', 2],
+	#'Школа 12': ['http://schoolnn12.narod.ru/', 2],
+	#'Школа 15': ['http://www.school-15.ru/parents.htm', 4]
+}
 
 news_map = dict()
-
+'''
 def csv_reader(file):
 
 	reader = csv.reader(file)
@@ -33,12 +33,12 @@ def csv_reader(file):
 					word3 = "".join(result_string)
 					result_string = []
 		schools_map[word1] = [word2, word3]
-
+'''
 
 def main():
 	
-	for i in schools_map.items():
-		print(i)
+	#for i in schools_map.items():
+	#	print(i)
 	
 	for iterator in schools_map.items():
 		html = ParsersPackage.parsers.get_html(iterator[1][0]) #2nd element of tuple; 1 element of list
@@ -49,8 +49,8 @@ def main():
 	
 
 if __name__ == '__main__':
-	schools_map = dict()
-	csv_path = "initial_data.csv"
-	with open(csv_path, "r") as file:
-		csv_reader(file)
+	#schools_map = dict()
+	#csv_path = "initial_data.csv"
+	#with open(csv_path, "r") as file:
+	#	csv_reader(file)
 	main()
