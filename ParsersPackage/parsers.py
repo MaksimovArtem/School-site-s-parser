@@ -27,6 +27,8 @@ def prettify_string(string):#make string better)
 				result.append(char)
 			elif (char.isspace() or char in ".-:;") and (not result or not result[-1].isspace()):
 				result.append(char)
+			elif (char in ","):
+				continue
 	return ''.join(result)
 	
 

@@ -37,18 +37,21 @@ def csv_reader(file):
 def csv_writer(file):
 	with open(file,"w", newline = '') as file:
 		writer = csv.writer(file, delimiter = ',')
-		for school in schools_map:
+		for news in news_map.items():
+			#string = [news_map[0], news_map[1]]
+			writer.writerow(news)
 			
 
 def main():
 
-	#for iterator in tqdm(schools_map.items()):
-	for iterator in schools_map.items():
+	for iterator in tqdm(schools_map.items()):
+	#for iterator in schools_map.items():
 		html = get_html(iterator[1][0]) #2nd element of tuple; 1 element of list
 		news_map[iterator[0]] = parser(html, (int)(iterator[1][1]))
 		
-	for i in news_map.items():
-		print(i)
+	csv_writer("output.csv")
+	#for i in news_map.items():
+	#	print(i)
 	
 
 if __name__ == '__main__':
