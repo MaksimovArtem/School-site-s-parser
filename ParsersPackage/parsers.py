@@ -6,7 +6,7 @@ import sys
 def get_html(url):
 	response = requests.get(url)
 	#if "htm" or "50" in url: #50 - костыль
-	if url.find("htm") != -1 or url.find("50") != -1 or url.find("121") != -1 or url.find("176") != -1:
+	if url.find("htm") != -1 or url.find("50") != -1 or url.find("121") != -1 or url.find("176") != -1 or url.find("115") != -1 or url.find("139") != -1 or url.find("172") != -1:
 		response.encoding = 'cp1251' # encode for htm and html web-pages
 		#url.encode('utf-8').decode('cp1251')
 	return response.text
@@ -45,8 +45,6 @@ def parser(html, lvl):
 	soup = BeautifulSoup(html, 'html.parser')
 	all_news = soup.find_all(text = re.compile("обрани"), limit = 3) # newest 3 words
 	answer = ''	
-	#print(soup)
-	#print(len(all_news))
 	try:
 		for news in all_news: 
 			string = get_needed_lvl(news,lvl)
