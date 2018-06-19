@@ -1,12 +1,14 @@
 import requests
 from bs4 import BeautifulSoup
 import re #regular expressions
-
+import sys
 
 def get_html(url):
 	response = requests.get(url)
-	if "htm" in url:
+	#if "htm" or "50" in url: #50 - костыль
+	if url.find("htm") != -1 or url.find("50") != -1 or url.find("121") != -1 or url.find("176") != -1:
 		response.encoding = 'cp1251' # encode for htm and html web-pages
+		#url.encode('utf-8').decode('cp1251')
 	return response.text
 
 
@@ -42,17 +44,19 @@ def get_needed_lvl(tag, lvl):#going up in tag tree to make parsing sentence more
 def parser(html, lvl):
 	soup = BeautifulSoup(html, 'html.parser')
 	all_news = soup.find_all(text = re.compile("обрани"), limit = 3) # newest 3 words
-	answer = ''
+	answer = ''	
+	#print(soup)
+	#print(len(all_news))
 	try:
 		for news in all_news: 
 			string = get_needed_lvl(news,lvl)
-			if search_needed_news(string):
+			if search_needed_news(string) and len(string) < 500:
 				answer += prettify_string(string)
 			else:
 				continue
-		if(len(answer) > 1500):
+		if(len(answer) > 1000):
 			return "Something has broken"
 		else:
 			return answer
 	except:
-		return ""	
+		return "Информации или нет, или где-то ошибка"	

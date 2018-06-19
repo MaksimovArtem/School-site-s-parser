@@ -5,7 +5,6 @@ from tqdm import tqdm
 news_map = dict()
 
 def csv_reader(file):
-
 	reader = csv.reader(file)
 	for row in reader:
 		string = " ".join(row)
@@ -37,13 +36,13 @@ def csv_writer(file):
 			
 
 def main():
-
 	for iterator in tqdm(schools_map.items()):
-	
+	#for iterator in schools_map.items():
 		html = get_html(iterator[1][0]) #2nd element of tuple; 1 element of list
 		news_map[iterator[0]] = parser(html, (int)(iterator[1][1]))
-		
 	csv_writer("output.csv")
+	#for q in news_map.items():
+	#	print(q)
 	
 
 if __name__ == '__main__':
