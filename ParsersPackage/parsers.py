@@ -3,12 +3,11 @@ from bs4 import BeautifulSoup
 import re #regular expressions
 import sys
 
+
 def get_html(url):
 	response = requests.get(url)
-	#if "htm" or "50" in url: #50 - костыль
-	if url.find("htm") != -1 or url.find("50") != -1 or url.find("121") != -1 or url.find("176") != -1 or url.find("115") != -1 or url.find("139") != -1 or url.find("172") != -1:
+	if url.find("htm") != -1 or url.find("50") != -1 or url.find("121") != -1 or url.find("176") != -1 or url.find("115") != -1 or url.find("139") != -1 or url.find("172") != -1 or url.find("174") != -1:
 		response.encoding = 'cp1251' # encode for htm and html web-pages
-		#url.encode('utf-8').decode('cp1251')
 	return response.text
 
 
