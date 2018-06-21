@@ -52,7 +52,7 @@ def parser(html, lvl):
 			else:
 				continue
 		if(len(answer) > 1000):
-			return "Something has broken"
+			return "Слишком большая новость"
 		else:
 			return answer
 	except:

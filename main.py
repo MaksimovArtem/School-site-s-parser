@@ -38,13 +38,13 @@ def csv_writer(file):
 
 def main():
 	for iterator in tqdm(schools_map.items()):
-		try:
+		if(iterator[1][0] == ""):
+			news_map[iterator[0]] = "DISTRICT"
+		else:
 			html = get_html(iterator[1][0]) #2nd element of tuple; 1 element of list
-			news_map[iterator[0]] = parser(html, (int)(iterator[1][1]))
-		except:
-			news_map[iterator[0]] = "District"
+			news_map[iterator[0]] = parser(html, (int)(iterator[1][1]))	
 	csv_writer("output.csv")
-
+	
 
 if __name__ == '__main__':
 	schools_map = dict()
