@@ -6,19 +6,20 @@ import sys
 
 def get_html(url):
 	response = requests.get(url)
-	if url.find("htm") != -1 or url.find("50") != -1 or url.find("121") != -1 or url.find("176") != -1 or url.find("115") != -1 or url.find("139") != -1 or url.find("172") != -1 or url.find("174") != -1:
-		response.encoding = 'cp1251' # encode for htm and html web-pages
+	windows_1251_encoding_list = ["htm","14","50","94","115","121","139","172","174","176"]# htm/html pages andlist of schools
+	for word in windows_1251_encoding_list:
+		if url.find(word) != -1:
+			response.encoding = 'cp1251' # encode for htm and html web-pages
+			break
 	return response.text
 
 
 def search_needed_news(string): #small dictionary that I used to get needed string
-	text1 = "родител"
-	text2 = "первоклассник"
-	text3 = "cостоится"
-	if string.find(text1) != -1 or string.find(text2)!= -1 or string.find(text3)!= -1:
-		return True
-	else:
-		return False
+	extra_keywords = ["родител","первоклассник","cостоится"]
+	for word in extra_keywords:
+		if string.find(word) != -1:
+			return True
+	return False
 
 
 def prettify_string(string):#make string better)
@@ -44,6 +45,8 @@ def parser(html, lvl):
 	soup = BeautifulSoup(html, 'html.parser')
 	all_news = soup.find_all(text = re.compile("обрани"), limit = 3) # newest 3 words
 	answer = ''	
+	print(soup)
+	print(len(all_news))
 	try:
 		for news in all_news: 
 			string = get_needed_lvl(news,lvl)
