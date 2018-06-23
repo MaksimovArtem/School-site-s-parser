@@ -2,7 +2,6 @@ import requests
 from bs4 import BeautifulSoup
 import re #regular expressions
 import sys
-from grab import Grab
 
 def get_html(url):
 	response = requests.get(url)

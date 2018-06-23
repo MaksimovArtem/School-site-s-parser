@@ -1,4 +1,4 @@
-from ParsersPackage.parsers import get_html, parser, secure_connect_parser
+from ParsersPackage.parsers import get_html, parser
 import csv
 from tqdm import tqdm
 
