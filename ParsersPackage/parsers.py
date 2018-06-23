@@ -44,8 +44,10 @@ def get_needed_lvl(tag, lvl):#going up in tag tree to make parsing sentence more
 
 def parser(html, lvl):
 	soup = BeautifulSoup(html, 'html.parser')
-	all_news = soup.find_all(text = re.compile("cобрани"), limit = 3) # newest 3 words
-	answer = ''	
+	all_news = soup.find_all(text = re.compile("обрани"), limit = 3) # newest 3 words
+	answer = ''
+	#print(soup)
+	#print(len(all_news))
 	try:
 		for news in all_news: 
 			string = get_needed_lvl(news,lvl)
@@ -67,7 +69,7 @@ def secure_connect_parser(url1):
 	g.request()
 	keyword = "обрани"
 
-	lists = g.doc.select('//div[contains(@class,"j-module n j-text")')
+	lists = g.doc.select('//div[contains(@class,"j-module n j-text ")')
 	for i in lists:
 		print(i)
 	
