@@ -38,12 +38,8 @@ def csv_writer(file):
 
 def main():
 	for iterator in tqdm(schools_map.items()):
-	#for iterator in schools_map.items():
 		if(iterator[1][0] == ""):
 			news_map[iterator[0]] = "DISTRICT"
-		#elif iterator[1][0].find("https") != -1:
-		#	print("You are here2. URL: {}".format(iterator[1][0]))
-		#	secure_connect_parser(iterator[1][0])
 		else:	
 			try:
 				html = get_html(iterator[1][0]) #2nd element of tuple; 1 element of list
@@ -52,8 +48,7 @@ def main():
 				print("Cайт {} {} временно недоступен".format(iterator[1][0], iterator[0]))
 				news_map[iterator[0]] = "Cайт {} временно недоступен".format(iterator[1][0])
 	csv_writer("output.csv")
-	#for i in news_map.items():
-	#	print(i)
+
 	
 if __name__ == '__main__':
 	schools_map = dict()

@@ -46,8 +46,6 @@ def parser(html, lvl):
 	soup = BeautifulSoup(html, 'html.parser')
 	all_news = soup.find_all(text = re.compile("обрани"), limit = 3) # newest 3 words
 	answer = ''
-	#print(soup)
-	#print(len(all_news))
 	try:
 		for news in all_news: 
 			string = get_needed_lvl(news,lvl)
@@ -61,15 +59,3 @@ def parser(html, lvl):
 			return answer
 	except:
 		return "Информации или нет, или где-то ошибка"	
-
-
-def secure_connect_parser(url1):
-	g = Grab()#https protocol
-	g.setup(url = url1, log_file = "out.html" )
-	g.request()
-	keyword = "обрани"
-
-	lists = g.doc.select('//div[contains(@class,"j-module n j-text ")')
-	for i in lists:
-		print(i)
-	
