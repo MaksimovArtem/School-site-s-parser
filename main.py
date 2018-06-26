@@ -2,7 +2,7 @@ from ParsersPackage.parsers import get_html, parser
 import csv
 from tqdm import tqdm
 
-news_map = dict()
+news_map = list()
 
 def csv_reader(file):
 	reader = csv.reader(file)
@@ -32,21 +32,30 @@ def csv_reader(file):
 def csv_writer(file):
 	with open(file,"w", newline = '') as file:
 		writer = csv.writer(file, delimiter = ',')
-		for news in news_map.items():
+		for news in news_map:
 			writer.writerow(news)
 			
 
 def main():
+	it = 0
 	for iterator in tqdm(schools_map.items()):
+		news_map.append(["",""])
 		if(iterator[1][0] == ""):
-			news_map[iterator[0]] = "DISTRICT"
-		else:	
+			news_map.append([iterator[0],"РАЙОН"])
+			space = "------------------------"
+			news_map[it][0] = news_map[it][1] = space
+			news_map.append([space,space])
+			it += 3
+		else:
 			try:
 				html = get_html(iterator[1][0]) #2nd element of tuple; 1 element of list
-				news_map[iterator[0]] = parser(html, (int)(iterator[1][1]))	
+				news_map[it][0] = iterator[0]
+				news_map[it][1] = parser(html, (int)(iterator[1][1]))	
 			except:
 				print("Cайт {} {} временно недоступен".format(iterator[1][0], iterator[0]))
-				news_map[iterator[0]] = "Cайт {} временно недоступен".format(iterator[1][0])
+				news_map[it][0] = iterator[0]
+				news_map[it][1] = "Cайт {} временно недоступен".format(iterator[1][0])
+			it += 1
 	csv_writer("output.csv")
 
 	
