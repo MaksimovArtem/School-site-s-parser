@@ -3,10 +3,10 @@ from bs4 import BeautifulSoup
 import re #regular expressions
 import sys
 
-
 def get_html(url):
 	response = requests.get(url)
-	windows_1251_encoding_list = ["htm","14","50","94","115","121","139","172","174","176"]# htm/html pages andlist of schools
+	windows_1251_encoding_list = ["htm","14","50","94","115","121","139","172","174","176"]
+	# htm/html pages and a list of schools with old encoding pages
 	for word in windows_1251_encoding_list:
 		if url.find(word) != -1:
 			response.encoding = 'cp1251' # encode for htm and html web-pages
@@ -44,9 +44,7 @@ def get_needed_lvl(tag, lvl):#going up in tag tree to make parsing sentence more
 def parser(html, lvl):
 	soup = BeautifulSoup(html, 'html.parser')
 	all_news = soup.find_all(text = re.compile("обрани"), limit = 3) # newest 3 words
-	answer = ''	
-	print(soup)
-	print(len(all_news))
+	answer = ''
 	try:
 		for news in all_news: 
 			string = get_needed_lvl(news,lvl)
