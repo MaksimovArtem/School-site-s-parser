@@ -1,6 +1,15 @@
 from ParsersPackage.parsers import get_html, parser
 import csv
 from tqdm import tqdm
+import sys
+from PyQt5 import QtWidgets
+import form
+
+class App(QtWidgets.QMainWindow, form.Ui_MainWindow):
+	def __init__(self):
+		super().__init__()
+		self.setupUi(self)
+		self.pushButton.clicked.connect(processing)
 
 news_map = list()
 
@@ -36,9 +45,10 @@ def csv_writer(file):
 			writer.writerow(news)
 			
 
-def main():
+def processing():
 	it = 0
 	for iterator in tqdm(schools_map.items()):
+	#for iterator in schools_map.items():
 		news_map.append(["",""])
 		if(iterator[1][0] == ""):
 			news_map.append([iterator[0],"РАЙОН"])
@@ -58,7 +68,14 @@ def main():
 			it += 1
 	csv_writer("output.csv")
 
+def main():
+
+	app = QtWidgets.QApplication(sys.argv)
+	window = App()
+	window.show()
+	app.exec_()
 	
+
 if __name__ == '__main__':
 	schools_map = dict()
 	csv_path = "initial_data.csv"

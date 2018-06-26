@@ -3,6 +3,7 @@ from bs4 import BeautifulSoup
 import re #regular expressions
 import sys
 
+
 def get_html(url):
 	response = requests.get(url)
 	windows_1251_encoding_list = ["htm","14","50","94","115","121","139","172","174","176"]
@@ -46,7 +47,7 @@ def parser(html, lvl):
 	all_news = soup.find_all(text = re.compile("обрани"), limit = 3) # newest 3 words
 	answer = ''
 	try:
-		for news in all_news: 
+		for news in all_news:
 			string = get_needed_lvl(news,lvl)
 			if search_needed_news(string) and len(string) < 500:
 				answer += prettify_string(string)
