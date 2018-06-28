@@ -2,14 +2,30 @@ from ParsersPackage.parsers import get_html, parser
 import csv
 from tqdm import tqdm
 import sys
-from PyQt5 import QtWidgets
-import form
+from PyQt5 import QtWidgets, QtCore
+import form2
 
-class App(QtWidgets.QMainWindow, form.Ui_MainWindow):
+class App(QtWidgets.QMainWindow, form2.Ui_MainWindow):
 	def __init__(self):
 		super().__init__()
 		self.setupUi(self)
-		self.pushButton.clicked.connect(processing)
+		self.button_behavior()
+		
+	def percentage(self,iteration):
+		percent = iteration * 100 // 154
+		self.progressBar.setProperty("value", percent)
+
+	def button_name_change(self,string):
+		self.pushButton.setText(QtCore.QCoreApplication.translate("MainWindow", string))
+
+	def button_behavior(self): #shitty way to run->open_file->die
+			self.pushButton.clicked.connect(lambda:processing(self))
+			#open file?
+			self.pushButton.clicked.connect(lambda:self.closing())
+
+	def closing(self):
+		self.close()
+
 
 news_map = list()
 
@@ -45,10 +61,11 @@ def csv_writer(file):
 			writer.writerow(news)
 			
 
-def processing():
-	it = 0
+def processing(app):
+	it = iterator_for_gui = 0
+	app.button_name_change("Идет работа")
+
 	for iterator in tqdm(schools_map.items()):
-	#for iterator in schools_map.items():
 		news_map.append(["",""])
 		if(iterator[1][0] == ""):
 			news_map.append([iterator[0],"РАЙОН"])
@@ -62,14 +79,16 @@ def processing():
 				news_map[it][0] = iterator[0]
 				news_map[it][1] = parser(html, (int)(iterator[1][1]))	
 			except:
-				print("Cайт {} {} временно недоступен".format(iterator[1][0], iterator[0]))
 				news_map[it][0] = iterator[0]
 				news_map[it][1] = "Cайт {} временно недоступен".format(iterator[1][0])
 			it += 1
+		iterator_for_gui += 1
+		app.percentage(iterator_for_gui)
 	csv_writer("output.csv")
+	app.button_name_change("Готово.Открываю файл")
+	
 
 def main():
-
 	app = QtWidgets.QApplication(sys.argv)
 	window = App()
 	window.show()

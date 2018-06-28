@@ -10,8 +10,8 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
-        MainWindow.setObjectName("MainWindow")
-        MainWindow.resize(455, 163)
+        MainWindow.setObjectName("Парсинг сайтов школ")
+        MainWindow.resize(480, 200)
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
         self.verticalLayout = QtWidgets.QVBoxLayout(self.centralwidget)
@@ -25,6 +25,10 @@ class Ui_MainWindow(object):
         item = QtWidgets.QListWidgetItem()
         self.listWidget.addItem(item)
         self.verticalLayout.addWidget(self.listWidget)
+        self.progressBar = QtWidgets.QProgressBar(self.centralwidget)
+        self.progressBar.setProperty("value", 0)
+        self.progressBar.setObjectName("progressBar")
+        self.verticalLayout.addWidget(self.progressBar)
         self.pushButton = QtWidgets.QPushButton(self.centralwidget)
         self.pushButton.setObjectName("pushButton")
         self.verticalLayout.addWidget(self.pushButton)
