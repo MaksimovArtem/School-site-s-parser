@@ -1,6 +1,36 @@
+#!/usr/bin/env python3
+
 from ParsersPackage.parsers import get_html, parser
 import csv
 from tqdm import tqdm
+import sys
+from PyQt5 import QtWidgets, QtCore
+import form2
+
+class App(QtWidgets.QMainWindow, form2.Ui_MainWindow):
+	def __init__(self):
+		super().__init__()
+		self.setupUi(self)
+		self.button_behavior()
+		
+	def percentage(self,iteration):
+		percent = iteration * 100 // 154
+		self.progressBar.setProperty("value", percent)
+
+	def button_name_change(self,string):
+		self.pushButton.setText(QtCore.QCoreApplication.translate("MainWindow", string))
+
+	def button_behavior(self): #shitty way to run->open_file->die
+		self.pushButton.clicked.connect(lambda:processing(self))
+		self.pushButton.clicked.connect(lambda:csv_writer("output.csv"))
+		self.pushButton.clicked.connect(lambda:self.closing())
+
+		self.pushButton_2.clicked.connect(lambda:search(self))
+		self.pushButton_2.clicked.connect(lambda:self.closing())
+
+	def closing(self):
+		self.close()
+
 
 news_map = list()
 
@@ -36,8 +66,10 @@ def csv_writer(file):
 			writer.writerow(news)
 			
 
-def main():
-	it = 0
+def processing(app):
+	it = iterator_for_gui = 0
+	app.button_name_change("Идет работа")
+
 	for iterator in tqdm(schools_map.items()):
 		news_map.append(["",""])
 		if(iterator[1][0] == ""):
@@ -52,13 +84,50 @@ def main():
 				news_map[it][0] = iterator[0]
 				news_map[it][1] = parser(html, (int)(iterator[1][1]))	
 			except:
-				print("Cайт {} {} временно недоступен".format(iterator[1][0], iterator[0]))
 				news_map[it][0] = iterator[0]
 				news_map[it][1] = "Cайт {} временно недоступен".format(iterator[1][0])
+				print("Cайт {} временно недоступен".format(iterator[1][0]))
 			it += 1
-	csv_writer("output.csv")
-
+		iterator_for_gui += 1
+		app.percentage(iterator_for_gui)
+	app.button_name_change("Готово.Открываю файл")
 	
+
+def search(app):
+	processing(app)
+	districts = ["АВТОЗАВОДСКИЙ,РАЙОН",
+				 "КАНАВИНСКИЙ,РАЙОН",
+				 "ЛЕНИНСКИЙ,РАЙОН",
+				 "МОСКОВСКИЙ,РАЙОН",
+				 "ПРИОКСКИЙ,РАЙОН",
+				 "НИЖЕГОРОДСКИЙ,РАЙОН",
+				 "СОВЕТСКИЙ,РАЙОН",
+				 "СОРМОВСКИЙ,РАЙОН",
+				 "------------------------,------------------------"]
+
+	with open("output.csv") as file:
+		with open("output_new.csv", "w",newline = '') as file2:
+			writer = csv.writer(file2, delimiter = ',')
+			reader = csv.reader(file)
+			i = 0
+			for row in reader:
+				print("Row: {}".format(row))
+				print("News: {}".format(news_map[i]))
+				if len(row) == 0 and i == 0:#если файл был пустой, то изменение == все
+					csv_writer("output_new.csv")
+			
+				if (row in districts) or row != news_map[i]:
+					writer.writerow(news_map[i])
+				i += 1
+
+
+def main():
+	app = QtWidgets.QApplication(sys.argv)
+	window = App()
+	window.show()
+	app.exec_()
+	
+
 if __name__ == '__main__':
 	schools_map = dict()
 	csv_path = "initial_data.csv"
