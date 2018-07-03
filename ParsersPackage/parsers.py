@@ -46,6 +46,7 @@ def parser(html, lvl):
 	soup = BeautifulSoup(html, 'html.parser')
 	all_news = soup.find_all(text = re.compile("обрани"), limit = 3) # newest 3 words
 	answer = ''
+	#print(len(all_news))
 	try:
 		for news in all_news:
 			string = get_needed_lvl(news,lvl)

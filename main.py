@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 from ParsersPackage.parsers import get_html, parser
 import csv
 from tqdm import tqdm
@@ -19,9 +21,12 @@ class App(QtWidgets.QMainWindow, form2.Ui_MainWindow):
 		self.pushButton.setText(QtCore.QCoreApplication.translate("MainWindow", string))
 
 	def button_behavior(self): #shitty way to run->open_file->die
-			self.pushButton.clicked.connect(lambda:processing(self))
-			#open file?
-			self.pushButton.clicked.connect(lambda:self.closing())
+		self.pushButton.clicked.connect(lambda:processing(self))
+		self.pushButton.clicked.connect(lambda:csv_writer("output.csv"))
+		self.pushButton.clicked.connect(lambda:self.closing())
+
+		self.pushButton_2.clicked.connect(lambda:search(self))
+		self.pushButton_2.clicked.connect(lambda:self.closing())
 
 	def closing(self):
 		self.close()
@@ -81,12 +86,40 @@ def processing(app):
 			except:
 				news_map[it][0] = iterator[0]
 				news_map[it][1] = "Cайт {} временно недоступен".format(iterator[1][0])
+				print("Cайт {} временно недоступен".format(iterator[1][0]))
 			it += 1
 		iterator_for_gui += 1
 		app.percentage(iterator_for_gui)
-	csv_writer("output.csv")
 	app.button_name_change("Готово.Открываю файл")
 	
+
+def search(app):
+	processing(app)
+	districts = ["АВТОЗАВОДСКИЙ,РАЙОН",
+				 "КАНАВИНСКИЙ,РАЙОН",
+				 "ЛЕНИНСКИЙ,РАЙОН",
+				 "МОСКОВСКИЙ,РАЙОН",
+				 "ПРИОКСКИЙ,РАЙОН",
+				 "НИЖЕГОРОДСКИЙ,РАЙОН",
+				 "СОВЕТСКИЙ,РАЙОН",
+				 "СОРМОВСКИЙ,РАЙОН",
+				 "------------------------,------------------------"]
+
+	with open("output.csv") as file:
+		with open("output_new.csv", "w",newline = '') as file2:
+			writer = csv.writer(file2, delimiter = ',')
+			reader = csv.reader(file)
+			i = 0
+			for row in reader:
+				print("Row: {}".format(row))
+				print("News: {}".format(news_map[i]))
+				if len(row) == 0 and i == 0:#если файл был пустой, то изменение == все
+					csv_writer("output_new.csv")
+			
+				if (row in districts) or row != news_map[i]:
+					writer.writerow(news_map[i])
+				i += 1
+
 
 def main():
 	app = QtWidgets.QApplication(sys.argv)
